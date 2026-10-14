@@ -1,0 +1,80 @@
+.movement-row {
+  display: grid;
+  grid-template-columns: 110px minmax(180px, 1.4fr) 110px 80px 120px 100px 120px 110px;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.movement-row:hover {
+  background: #f8f8f8;
+}
+
+.movement-row__entry {
+  font-size: var(--text-md);
+}
+
+.movement-row__product {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.movement-row__prod-name {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.movement-row__prod-sku {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.movement-row__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.movement-row__units {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding-right: 14px;
+}
+
+.movement-row__balance {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-sm);
+  color: #333;
+}
+
+.movement-row__ref {
+  font-size: var(--text-sm);
+}
+
+.movement-row__datetime {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--text-sm);
+}
+
+.movement-row__time {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.movement-row__by {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  text-align: right;
+  font-size: var(--text-sm);
+}

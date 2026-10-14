@@ -1,0 +1,10 @@
+.products-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.products-page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}

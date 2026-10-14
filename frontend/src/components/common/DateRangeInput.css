@@ -1,0 +1,33 @@
+.date-range-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.date-range-input {
+  height: 44px;
+  padding: 0 36px 0 14px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  font-family: inherit;
+  font-size: var(--text-md);
+  color: inherit;
+  outline: 0;
+  white-space: nowrap;
+  min-width: 200px;
+}
+
+.date-range-input:focus {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.date-range-icon {
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}

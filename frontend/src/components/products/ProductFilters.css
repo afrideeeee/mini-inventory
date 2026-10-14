@@ -1,0 +1,31 @@
+.product-filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 28px;
+}
+
+.product-filters .search {
+  flex: 1;
+}
+
+.product-filters .select-wrap {
+  width: auto;
+  min-width: 175px;
+}
+
+.product-filters .btn {
+  height: 44px;
+}
+
+@media (max-width: 900px) {
+  .product-filters {
+    flex-wrap: wrap;
+  }
+  .product-filters .search {
+    min-width: 100%;
+  }
+  .product-filters .select-wrap {
+    flex: 1;
+  }
+}

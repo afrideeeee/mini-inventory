@@ -1,4 +1,6 @@
 import { mockMovements } from "../data/mockMovements";
+import { appConfig } from "../config/appConfig";
+import { formatTime } from "../utils/format";
 
 let store = mockMovements.map((m) => ({ ...m }));
 
@@ -19,22 +21,36 @@ export const movementService = {
     reason,
     date,
     reference = "",
+    balanceBefore = 0,
     balanceAfter,
+    by = appConfig.user.name,
   }) {
     await delay();
+    const highestNum = store.reduce((max, item) => {
+      const match = item.id.match(/MOV-(\d+)/);
+      return match ? Math.max(max, parseInt(match[1], 10)) : max;
+    }, 108);
+
+    const nextId = `MOV-${String(highestNum + 1).padStart(4, "0")}`;
+    const now = new Date();
+
     const newMovement = {
-      id: `mov-${String(store.length + 1).padStart(2, "0")}`,
+      id: nextId,
       productId,
       productName,
       sku,
       type,
       quantity: Number(quantity),
-      reason,
-      date,
-      reference: reference.trim(),
+      balanceBefore,
       balanceAfter,
-      createdAt: new Date().toISOString(),
+      reason,
+      date: date || "13 Oct 2026",
+      time: formatTime(now),
+      reference: reference.trim() || "—",
+      by,
+      createdAt: now.toISOString(),
     };
+
     store = [newMovement, ...store];
     return { ...newMovement };
   },

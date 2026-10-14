@@ -20,6 +20,23 @@ export function ProductsProvider({ children }) {
     };
   }, []);
 
+  const addProduct = useCallback(async (data) => {
+    const created = await productService.create(data);
+    setProducts((prev) => [...prev, created]);
+    return created;
+  }, []);
+
+  const updateProduct = useCallback(async (id, data) => {
+    const updated = await productService.update(id, data);
+    setProducts((prev) => prev.map((p) => (p.id === id ? updated : p)));
+    return updated;
+  }, []);
+
+  const deleteProduct = useCallback(async (id) => {
+    await productService.delete(id);
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+  }, []);
+
   const recordMovement = useCallback(async (movementData) => {
     const { product, movement } = await productService.recordMovement(movementData);
     setProducts((prev) => prev.map((p) => (p.id === product.id ? product : p)));
@@ -28,12 +45,14 @@ export function ProductsProvider({ children }) {
 
   const stats = useMemo(() => {
     let totalUnits = 0;
+    let totalValue = 0;
     let inStockCount = 0;
     let lowStockCount = 0;
     let outOfStockCount = 0;
 
     for (const p of products) {
       totalUnits += p.onHand;
+      totalValue += p.onHand * (p.unitCost || 0);
       const status = getStockStatus(p.onHand, p.minLevel);
       if (status === "in-stock") inStockCount++;
       else if (status === "low-stock") lowStockCount++;
@@ -42,6 +61,7 @@ export function ProductsProvider({ children }) {
 
     return {
       totalUnits,
+      totalValue,
       inStockCount,
       lowStockCount,
       outOfStockCount,
@@ -55,9 +75,12 @@ export function ProductsProvider({ children }) {
       stats,
       loading,
       error,
+      addProduct,
+      updateProduct,
+      deleteProduct,
       recordMovement,
     }),
-    [products, stats, loading, error, recordMovement]
+    [products, stats, loading, error, addProduct, updateProduct, deleteProduct, recordMovement]
   );
 
   return (

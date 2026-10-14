@@ -1,0 +1,8 @@
+.movement-records-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.movement-records-notice {
+  margin-top: 16px;
+}

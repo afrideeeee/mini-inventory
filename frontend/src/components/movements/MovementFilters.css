@@ -1,0 +1,32 @@
+.movement-filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 28px;
+}
+
+.movement-filters .search {
+  flex: 1;
+}
+
+.movement-filters .select-wrap {
+  width: auto;
+  min-width: 170px;
+}
+
+.movement-filters .btn {
+  height: 44px;
+}
+
+@media (max-width: 900px) {
+  .movement-filters {
+    flex-wrap: wrap;
+  }
+  .movement-filters .search {
+    min-width: 100%;
+  }
+  .movement-filters .select-wrap,
+  .movement-filters .date-range-wrap {
+    flex: 1;
+  }
+}

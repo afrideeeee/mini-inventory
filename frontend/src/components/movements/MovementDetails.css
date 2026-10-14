@@ -1,0 +1,30 @@
+.movement-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.movement-details-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.movement-details-label {
+  font-size: var(--text-xs);
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.movement-details-value {
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+
+.movement-details-value--highlight {
+  font-family: var(--font-serif);
+  font-size: 24px;
+}
