@@ -1,0 +1,27 @@
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  white-space: nowrap;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  text-align: center;
+}
+
+.status-badge--in-stock {
+  border: 1px solid var(--rule);
+  font-weight: 400;
+}
+
+.status-badge--low-stock {
+  border: 1px solid var(--rule);
+  font-weight: 600;
+}
+
+.status-badge--out-of-stock {
+  border: 2px solid var(--rule);
+  font-weight: 700;
+}

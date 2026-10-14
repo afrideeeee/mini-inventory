@@ -1,0 +1,36 @@
+.tabs {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--rule);
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s ease;
+  padding: 0 12px;
+}
+
+.tab-btn:hover {
+  color: var(--ink);
+}
+
+.tab-btn--active {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom: 3px solid var(--ink);
+}

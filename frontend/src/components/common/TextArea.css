@@ -1,0 +1,27 @@
+.textarea-field { display: flex; flex-direction: column; gap: 5px; }
+
+.textarea-field__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-h);
+  letter-spacing: 0.02em;
+}
+
+.textarea-field__required { color: var(--danger); }
+
+.textarea-field__input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text-h);
+  font-size: 13px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.textarea-field__input::placeholder { color: var(--text-muted); }
+
+.textarea-field__input:focus { border-color: var(--accent); }

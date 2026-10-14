@@ -1,0 +1,21 @@
+:root {
+  /* colour */
+  --ink: #111111;
+  --paper: #ffffff;
+  --muted: #555555;
+  --rule: #111111;
+  --danger: #b3261e;
+
+  /* type */
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-md: 13px;
+
+  /* layout */
+  --sidebar-width: 220px;
+  --topbar-height: 80px;
+  --side-column-width: 336px;
+  --page-gutter: 40px;
+}

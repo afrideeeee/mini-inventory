@@ -1,0 +1,39 @@
+.category-table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+/* header row */
+.category-table__head-row {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+
+.category-table__th {
+  padding: 9px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.category-table__th--num    { text-align: right; width: 80px; }
+.category-table__th--actions { text-align: right; width: 72px; }
+
+/* empty state */
+.category-table__empty {
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
