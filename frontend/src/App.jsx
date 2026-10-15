@@ -13,16 +13,19 @@ import MovementRecordsPage from "./pages/MovementRecordsPage";
 import { AuthProvider } from "./context/AuthProvider";
 import RequireAuth from "./components/auth/RequireAuth";
 import LoginPage from "./pages/LoginPage";
+import { LastUpdatedProvider } from "./context/LastUpdatedProvider";
 
 function InventoryProviders() {
   return (
-    <CategoriesProvider>
-      <ProductsProvider>
-        <MovementsProvider>
-          <Outlet />
-        </MovementsProvider>
-      </ProductsProvider>
-    </CategoriesProvider>
+    <LastUpdatedProvider>
+      <CategoriesProvider>
+        <ProductsProvider>
+          <MovementsProvider>
+            <Outlet />
+          </MovementsProvider>
+        </ProductsProvider>
+      </CategoriesProvider>
+    </LastUpdatedProvider>
   );
 }
 

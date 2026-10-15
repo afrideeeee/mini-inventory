@@ -2,7 +2,8 @@ import { Pencil, Trash2 } from "lucide-react";
 import { formatNumber } from "../../utils/format";
 
 export default function CategoryRow({ category, editing, onEdit, onDelete }) {
-  const { code, name, description, skus, productCount, units } = category;
+  const { code, name, description, productCount = 0, units = 0 } = category;
+  const skus = category.skus || [];
 
   return (
     <div className={`table__row${editing ? " category-row--editing" : ""}`} role="row">

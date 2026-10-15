@@ -40,7 +40,7 @@ export default function CategoriesPage() {
     const q = query.trim().toLowerCase();
     if (!q) return categories;
     return categories.filter(
-      (c) => c.name.toLowerCase().includes(q) || c.description.toLowerCase().includes(q)
+      (c) => c.name.toLowerCase().includes(q) || (c.description || "").toLowerCase().includes(q)
     );
   }, [categories, query]);
 

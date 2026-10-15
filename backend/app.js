@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routes/auth");
+const categoryRoutes = require("./routes/categoryRoutes");
 const requireAuth = require("./middleware/requireAuth");
 
 const app = express();
@@ -9,6 +10,7 @@ const app = express();
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:5173" }));
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/api/categories", categoryRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({
