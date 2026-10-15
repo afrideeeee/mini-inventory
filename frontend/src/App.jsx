@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { ROUTES } from "./config/routes";
 import { CategoriesProvider } from "./context/CategoriesProvider";
 import { ProductsProvider } from "./context/ProductsProvider";
@@ -10,13 +10,29 @@ import ProductFormPage from "./pages/ProductFormPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import StockManagementPage from "./pages/StockManagementPage";
 import MovementRecordsPage from "./pages/MovementRecordsPage";
+import { AuthProvider } from "./context/AuthProvider";
+import RequireAuth from "./components/auth/RequireAuth";
+import LoginPage from "./pages/LoginPage";
 
-export default function App() {
+function InventoryProviders() {
   return (
     <CategoriesProvider>
       <ProductsProvider>
         <MovementsProvider>
-          <Routes>
+          <Outlet />
+        </MovementsProvider>
+      </ProductsProvider>
+    </CategoriesProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <Routes>
+        <Route path={ROUTES.login} element={<LoginPage />} />
+        <Route element={<RequireAuth />}>
+          <Route element={<InventoryProviders />}>
             <Route element={<AppLayout />}>
               <Route path={ROUTES.dashboard} element={<DashboardPage />} />
               <Route path={ROUTES.products} element={<ProductsPage />} />
@@ -25,12 +41,11 @@ export default function App() {
               <Route path={ROUTES.categories} element={<CategoriesPage />} />
               <Route path={ROUTES.stock} element={<StockManagementPage />} />
               <Route path={ROUTES.movements} element={<MovementRecordsPage />} />
-              {/* Default landing page is Dashboard */}
               <Route path="*" element={<Navigate to={ROUTES.dashboard} replace />} />
             </Route>
-          </Routes>
-        </MovementsProvider>
-      </ProductsProvider>
-    </CategoriesProvider>
+          </Route>
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
