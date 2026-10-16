@@ -1,4 +1,4 @@
-import { ChevronDown, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { appConfig } from "../../config/appConfig";
 import { formatDateLong } from "../../utils/format";
 import { useAuth } from "../../hooks/useAuth";
@@ -14,11 +14,10 @@ export default function Topbar() {
 
   return (
     <header className="topbar">
-      <button type="button" className="topbar__workspace" aria-label="Switch warehouse">
+      <div className="topbar__workspace">
         <span className="topbar__company">{companyName}</span>
         <span>/ {warehouse}</span>
-        <ChevronDown size={16} aria-hidden="true" />
-      </button>
+      </div>
 
       <div className="topbar__user">
         <span className="topbar__date">{formatDateLong(new Date())}</span>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { BookOpen, CircleHelp } from "lucide-react";
 import { appConfig } from "../../config/appConfig";
@@ -5,11 +6,14 @@ import { navigationItems } from "../../config/navigation";
 import { ROUTES } from "../../config/routes";
 import { useCategories } from "../../hooks/useCategories";
 import { pluralise } from "../../utils/format";
+import LedgerGuide from "./LedgerGuide";
 
 export default function Sidebar() {
   const { stats } = useCategories();
+  const [guideOpen, setGuideOpen] = useState(false);
 
   return (
+    <>
     <aside className="sidebar">
       <div className="sidebar__brand">
         <BookOpen size={26} strokeWidth={1.75} aria-hidden="true" />
@@ -44,13 +48,15 @@ export default function Sidebar() {
               {appConfig.warehouse} / {appConfig.currency}
             </span>
           </div>
-          <a href="#guide" className="sidebar__guide">
+          <button type="button" className="sidebar__guide" onClick={() => setGuideOpen(true)}>
             <CircleHelp size={18} strokeWidth={1.75} aria-hidden="true" />
             Ledger guide
-          </a>
+          </button>
           <span className="sidebar__edition">{appConfig.edition}</span>
         </div>
       </div>
     </aside>
+    {guideOpen && <LedgerGuide onClose={() => setGuideOpen(false)} />}
+    </>
   );
 }

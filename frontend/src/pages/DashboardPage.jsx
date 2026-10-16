@@ -5,6 +5,7 @@ import { useCategories } from "../hooks/useCategories";
 import { useMovements } from "../hooks/useMovements";
 import { formatCurrency, padCount } from "../utils/format";
 import { getStockStatus } from "../utils/stockStatus";
+import { buildStockFlowData } from "../utils/stockFlowData";
 
 import PageHeader from "../components/common/PageHeader";
 import ArrowLink from "../components/common/ArrowLink";
@@ -27,20 +28,8 @@ export default function DashboardPage() {
     });
   }, [products]);
 
-  // Today movement stats for flow
-  const { todayIn, todayOut, netUnitsToday } = useMemo(() => {
-    let tin = 0;
-    let tout = 0;
-    for (const m of movements) {
-      if (m.type === "in") tin += m.quantity;
-      else if (m.type === "out") tout += m.quantity;
-    }
-    return {
-      todayIn: tin,
-      todayOut: tout,
-      netUnitsToday: tin - tout,
-    };
-  }, [movements]);
+  const stockFlow = useMemo(() => buildStockFlowData(movements), [movements]);
+  const netUnitsToday = stockFlow.todayIn - stockFlow.todayOut;
 
   const netDisplay = netUnitsToday >= 0 ? `+${netUnitsToday}` : String(netUnitsToday);
   const needsAttentionCount = productStats.lowStockCount + productStats.outOfStockCount;
@@ -79,7 +68,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="dashboard-middle-grid">
-        <StockFlowChart todayIn={todayIn} todayOut={todayOut} />
+        <StockFlowChart {...stockFlow} />
         <ReorderWatch items={reorderItems} />
       </div>
 

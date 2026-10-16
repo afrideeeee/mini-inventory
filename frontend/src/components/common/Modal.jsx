@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
 
-export default function Modal({ title, onClose, children, footer }) {
+export default function Modal({ title, onClose, children, footer, className = "" }) {
   useEffect(() => {
     const onKeyDown = (event) => event.key === "Escape" && onClose();
     document.addEventListener("keydown", onKeyDown);
@@ -11,7 +11,7 @@ export default function Modal({ title, onClose, children, footer }) {
   return (
     <div className="modal-backdrop" onMouseDown={onClose}>
       <div
-        className="modal"
+        className={`modal ${className}`.trim()}
         role="dialog"
         aria-modal="true"
         aria-label={title}
