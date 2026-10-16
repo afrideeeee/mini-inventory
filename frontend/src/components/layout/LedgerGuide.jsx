@@ -40,7 +40,7 @@ export default function LedgerGuide({ onClose }) {
             </article>
             <article>
               <h4>Products</h4>
-              <p>Manage the catalog. Search by name or SKU; filter by category or stock state. Use the edit and delete actions on a product. Export the current filtered list to CSV. CSV import is not connected yet.</p>
+              <p>Manage the catalog. Search by name or SKU; filter by category or stock state. Use the edit and delete actions on a product. Export the current filtered list to CSV.</p>
             </article>
             <article>
               <h4>Categories</h4>

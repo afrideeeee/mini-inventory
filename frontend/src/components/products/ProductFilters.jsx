@@ -17,7 +17,7 @@ export default function ProductFilters({
 }) {
   const categoryOptions = [
     { value: "all", label: "All categories" },
-    ...categories.map((c) => ({ value: c.name, label: c.name })),
+    ...categories.map((c) => ({ value: c.id, label: c.name })),
   ];
 
   return (

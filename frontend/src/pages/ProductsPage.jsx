@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Upload } from "lucide-react";
+import { Plus } from "lucide-react";
 import { ROUTES } from "../config/routes";
 import { useProducts } from "../hooks/useProducts";
 import { useCategories } from "../hooks/useCategories";
@@ -40,8 +40,18 @@ export default function ProductsPage() {
   const [deleteBusy, setDeleteBusy] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
+  // Products keep a denormalized category label from the API. Resolve it from
+  // the shared category state so a rename appears here without reloading.
+  const currentProducts = useMemo(() => {
+    const namesById = new Map(categories.map((category) => [category.id, category.name]));
+    return products.map((product) => ({
+      ...product,
+      category: namesById.get(product.categoryId) || product.category,
+    }));
+  }, [products, categories]);
+
   const filtered = useMemo(() => {
-    return products.filter((p) => {
+    return currentProducts.filter((p) => {
       const q = searchQuery.trim().toLowerCase();
       const matchesSearch =
         !q ||
@@ -51,7 +61,7 @@ export default function ProductsPage() {
 
       if (!matchesSearch) return false;
 
-      if (categoryFilter !== "all" && p.category !== categoryFilter) {
+      if (categoryFilter !== "all" && p.categoryId !== categoryFilter) {
         return false;
       }
 
@@ -64,7 +74,7 @@ export default function ProductsPage() {
 
       return true;
     });
-  }, [products, searchQuery, categoryFilter, stockStateFilter]);
+  }, [currentProducts, searchQuery, categoryFilter, stockStateFilter]);
 
   const pager = usePagination(filtered, PAGE_SIZE);
 
@@ -100,9 +110,11 @@ export default function ProductsPage() {
         subtitle="Keep product details tidy and tied to the right category."
       >
         <div className="products-page-header-actions">
+          {/* CSV import control stays disabled until import is implemented.
           <Button icon={Upload} onClick={() => alert("CSV import feature ready for file upload.")}>
             Import CSV
           </Button>
+          */}
           <Button to={ROUTES.productNew} variant="strong" icon={Plus}>
             Add product
           </Button>
