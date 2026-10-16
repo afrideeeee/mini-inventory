@@ -2,6 +2,17 @@ const mongoose = require("mongoose");
 const Movement = require("../models/Movement");
 const Product = require("../models/Product");
 
+function todayInPakistan() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Karachi",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
 function serialize(movement) {
   const value = movement.toJSON();
   return { ...value, id: `MOV-${String(value._id).toUpperCase()}` };
@@ -21,6 +32,9 @@ function movementInput(body) {
   const parsedDate = new Date(`${date}T00:00:00Z`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== date) {
     throw Object.assign(new Error("Enter a valid movement date."), { status: 400 });
+  }
+  if (date > todayInPakistan()) {
+    throw Object.assign(new Error("Movement date cannot be in the future."), { status: 400 });
   }
   return { productId, type, quantity, reason, date };
 }

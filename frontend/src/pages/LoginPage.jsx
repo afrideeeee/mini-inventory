@@ -9,7 +9,7 @@ function LedgerIllustration() {
   return (
     <svg className="login-art" viewBox="0 0 560 300" role="img" aria-label="An open ledger tracking stock moving in and out">
       <path d="M27 22h227l26 18 26-18h227v250H306l-26 18-26-18H27z" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M37 31h212l24 17v225l-20-15H37zM543 31H331l-24 17v225l20-15h216z" fill="none" stroke="currentColor" strokeWidth="1" />
+      <path d="M37 31h212l24 17v225l-20-15H37zM523 31H311l-24 17v225l20-15h216z" fill="none" stroke="currentColor" strokeWidth="1" />
       <path d="M58 90h170m-170 37h170m-170 37h170m-170 37h170m-170 37h170M332 90h170m-170 37h170m-170 37h170m-170 37h170m-170 37h170" stroke="currentColor" strokeWidth="1" />
       <path d="M195 90v148m278-148v148" stroke="currentColor" />
       <g fill="currentColor" fontFamily="monospace" fontSize="9" fontWeight="700">

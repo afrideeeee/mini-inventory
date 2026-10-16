@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Calendar } from "lucide-react";
+import { getTodayDateInputValue } from "../../utils/date";
 import "./DateFilterInput.css";
 
 export default function DateFilterInput({ value = "", onChange, className = "", ...props }) {
@@ -21,6 +22,7 @@ export default function DateFilterInput({ value = "", onChange, className = "", 
       <input
         ref={inputRef}
         type="date"
+        max={getTodayDateInputValue()}
         className="date-filter-input"
         value={value}
         onChange={(event) => onChange?.(event.target.value)}

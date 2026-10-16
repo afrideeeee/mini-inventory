@@ -8,13 +8,8 @@ import SelectInput from "../common/SelectInput";
 import Button from "../common/Button";
 import BalancePreview from "./BalancePreview";
 import { STOCK_IN_REASONS, STOCK_OUT_REASONS } from "../../constants/stockReasons";
+import { getTodayDateInputValue } from "../../utils/date";
 import "./MovementForm.css";
-
-function todayInputValue() {
-  const today = new Date();
-  const localOffset = today.getTimezoneOffset() * 60_000;
-  return new Date(today.getTime() - localOffset).toISOString().slice(0, 10);
-}
 
 const TABS = [
   { id: "in", label: "Stock-in", icon: ArrowDownLeft },
@@ -31,7 +26,8 @@ export default function MovementForm({
   const [type, setType] = useState("in");
   const [localProductId, setLocalProductId] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [date, setDate] = useState(todayInputValue);
+  const [date, setDate] = useState(getTodayDateInputValue);
+  const [dateError, setDateError] = useState("");
   const [reason, setReason] = useState(STOCK_IN_REASONS[0].value);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -71,8 +67,18 @@ export default function MovementForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setDateError("");
     setSuccess("");
 
+    const today = getTodayDateInputValue();
+    if (!date) {
+      setDateError("Select a movement date.");
+      return;
+    }
+    if (date > today) {
+      setDateError("Movement date cannot be in the future.");
+      return;
+    }
     if (!activeProductId) {
       setError("Please select a product.");
       return;
@@ -104,7 +110,9 @@ export default function MovementForm({
       setSuccess(`Movement recorded successfully for ${currentProduct.name}.`);
       setQuantity("");
     } catch (err) {
-      setError(err.message || "Failed to record movement.");
+      const message = err.message || "Failed to record movement.";
+      if (message.toLowerCase().includes("movement date")) setDateError(message);
+      else setError(message);
     } finally {
       setSubmitting(false);
     }
@@ -159,12 +167,17 @@ export default function MovementForm({
             />
           </FormField>
 
-          <FormField id={`${formBaseId}-date`} label="Date" required>
+          <FormField id={`${formBaseId}-date`} label="Date" required error={dateError}>
             <TextInput
               id={`${formBaseId}-date`}
               type="date"
+              max={getTodayDateInputValue()}
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              invalid={Boolean(dateError)}
+              onChange={(e) => {
+                setDate(e.target.value);
+                setDateError("");
+              }}
             />
           </FormField>
         </div>
