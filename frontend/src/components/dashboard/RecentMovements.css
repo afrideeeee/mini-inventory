@@ -40,7 +40,7 @@
 
 .fresh-entries__tr {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 140px 90px 140px 140px;
+  grid-template-columns: minmax(0, 1fr) 140px 90px 140px;
   align-items: center;
   padding: 14px 20px;
   border-bottom: 1px solid var(--rule);

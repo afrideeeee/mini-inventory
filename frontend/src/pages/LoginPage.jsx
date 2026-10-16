@@ -56,7 +56,7 @@ export default function LoginPage() {
           <p className="login-story__copy">Every product, every unit, every movement. A clear record of<br className="login-wide-break" /> what comes in, what goes out, and what’s next.</p>
         </div>
         <div className="login-story__art-wrap"><LedgerIllustration /><p>EVERY DETAIL, ON THE BOOKS.</p></div>
-        <footer className="login-story__footer"><strong>ONE PLACE. EVERY UNIT.</strong><span>Main warehouse / USD</span></footer>
+        <footer className="login-story__footer"><strong>ONE PLACE. EVERY UNIT.</strong><span>Main warehouse / PKR</span></footer>
       </section>
 
       <section className="login-panel">

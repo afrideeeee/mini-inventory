@@ -10,9 +10,13 @@ export default function ProductSnapshot({ product }) {
     sku,
     onHand = 0,
     unitCost = 0,
-    createdAt = "02 Oct 2026",
-    createdBy = "Alex Lee",
+    createdAt = "Not yet saved",
+    createdBy = "",
   } = product;
+
+  const createdDate = createdAt && createdAt !== "Not yet saved" && !Number.isNaN(Date.parse(createdAt))
+    ? new Intl.DateTimeFormat(undefined, { day: "2-digit", month: "short", year: "numeric" }).format(new Date(createdAt))
+    : createdAt;
 
   const inventoryValue = onHand * unitCost;
 
@@ -45,7 +49,7 @@ export default function ProductSnapshot({ product }) {
         </div>
 
         <div className="product-snapshot__meta">
-          Created {createdAt} · {createdBy}
+          {createdDate && `Created ${createdDate}`}{createdBy && ` · ${createdBy}`}
         </div>
       </div>
     </div>

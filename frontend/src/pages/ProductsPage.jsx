@@ -97,7 +97,7 @@ export default function ProductsPage() {
       <PageHeader
         eyebrow="02 / THE PRODUCT CATALOG"
         title="Products"
-        subtitle="Keep the details tidy. Manage the eight products that make up your inventory."
+        subtitle="Keep product details tidy and tied to the right category."
       >
         <div className="products-page-header-actions">
           <Button icon={Upload} onClick={() => alert("CSV import feature ready for file upload.")}>

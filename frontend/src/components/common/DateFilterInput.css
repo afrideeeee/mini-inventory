@@ -1,10 +1,10 @@
-.date-range-wrap {
+.date-filter-wrap {
   position: relative;
   display: inline-flex;
   align-items: center;
 }
 
-.date-range-input {
+.date-filter-input {
   height: 44px;
   padding: 0 36px 0 14px;
   background: var(--paper);
@@ -18,16 +18,29 @@
   min-width: 200px;
 }
 
-.date-range-input:focus {
+.date-filter-input:focus {
   outline: 2px solid var(--ink);
   outline-offset: 1px;
 }
 
-.date-range-icon {
+.date-filter-input::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.date-filter-icon {
   position: absolute;
   right: 12px;
-  pointer-events: none;
   display: grid;
   place-items: center;
   color: var(--ink);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.date-filter-icon:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }

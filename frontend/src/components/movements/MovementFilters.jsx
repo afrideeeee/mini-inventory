@@ -1,6 +1,6 @@
 import SearchInput from "../common/SearchInput";
 import SelectInput from "../common/SelectInput";
-import DateRangeInput from "../common/DateRangeInput";
+import DateFilterInput from "../common/DateFilterInput";
 import Button from "../common/Button";
 import "./MovementFilters.css";
 
@@ -15,7 +15,7 @@ export default function MovementFilters({
   onSearchChange,
   typeFilter,
   onTypeChange,
-  dateRange,
+  dateValue,
   onDateChange,
   onClear,
 }) {
@@ -24,7 +24,7 @@ export default function MovementFilters({
       <SearchInput
         value={searchQuery}
         onChange={onSearchChange}
-        placeholder="Search product, SKU or reference…"
+        placeholder="Search entry, product or SKU…"
       />
 
       <SelectInput
@@ -34,8 +34,8 @@ export default function MovementFilters({
         aria-label="Filter by movement type"
       />
 
-      <DateRangeInput
-        value={dateRange}
+      <DateFilterInput
+        value={dateValue}
         onChange={onDateChange}
       />
 

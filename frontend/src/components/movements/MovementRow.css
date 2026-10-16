@@ -1,6 +1,7 @@
 .movement-row {
   display: grid;
-  grid-template-columns: 110px minmax(180px, 1.4fr) 110px 80px 120px 100px 120px 110px;
+  grid-template-columns: 160px minmax(220px, 1.2fr) 130px 80px 130px 170px minmax(180px, 0.9fr);
+  min-width: 1080px;
   align-items: center;
   padding: 14px 16px;
   border-bottom: 1px solid var(--rule);
@@ -16,6 +17,15 @@
 
 .movement-row__entry {
   font-size: var(--text-md);
+  min-width: 0;
+}
+
+.movement-row__entry span {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .movement-row__product {
@@ -26,6 +36,9 @@
 }
 
 .movement-row__prod-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-weight: 700;
   line-height: 1.25;
 }
@@ -52,10 +65,7 @@
   font-variant-numeric: tabular-nums;
   font-size: var(--text-sm);
   color: #333;
-}
-
-.movement-row__ref {
-  font-size: var(--text-sm);
+  white-space: nowrap;
 }
 
 .movement-row__datetime {
@@ -63,6 +73,14 @@
   flex-direction: column;
   gap: 2px;
   font-size: var(--text-sm);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.movement-row__datetime span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .movement-row__time {
@@ -77,4 +95,13 @@
   gap: 6px;
   text-align: right;
   font-size: var(--text-sm);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.movement-row__by span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

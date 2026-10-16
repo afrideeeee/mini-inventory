@@ -16,7 +16,7 @@ export default function MovementSummary({ movements = [] }) {
   return (
     <div className="movement-summary" role="region" aria-label="Movement statistics">
       <div className="movement-summary__eyebrow">
-        Today / {total} records
+        Filtered records / {total}
       </div>
       <div className="movement-summary__stat">
         <span className="movement-summary__val">{unitsIn}</span>

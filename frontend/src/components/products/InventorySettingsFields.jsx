@@ -20,7 +20,7 @@ export default function InventorySettingsFields({
         <div className="product-form-grid product-form-grid--3">
           <FormField
             id="prod-cost"
-            label="Unit cost (USD)"
+            label="Unit cost (PKR)"
             required
             hint="Used for inventory valuation."
             error={errors.unitCost}

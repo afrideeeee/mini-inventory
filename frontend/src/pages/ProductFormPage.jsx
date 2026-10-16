@@ -17,13 +17,12 @@ import "./ProductFormPage.css";
 export default function ProductFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { products, addProduct, updateProduct, deleteProduct } = useProducts();
-  const { categories } = useCategories();
+  const { products, loading: productsLoading, addProduct, updateProduct, deleteProduct } = useProducts();
+  const { categories, loading: categoriesLoading } = useCategories();
 
   const isEdit = Boolean(id);
   const currentProduct = isEdit ? products.find((p) => p.id === id) : null;
 
-  const [editProductId, setEditProductId] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
   const [deleteBusy, setDeleteBusy] = useState(false);
@@ -57,7 +56,7 @@ export default function ProductFormPage() {
   };
 
   const isDeleteBlocked = currentProduct && currentProduct.onHand > 0;
-  const selectedEditProductId = editProductId || products[0]?.id || "";
+  const selectedEditProductId = currentProduct?.id || products[0]?.id || "";
 
   const handleEditMode = () => {
     if (selectedEditProductId) {
@@ -103,13 +102,14 @@ export default function ProductFormPage() {
         )}
       </div>
 
-      {!isEdit && (
+      {isEdit && (
         <div className="product-form-edit-picker">
-          <label htmlFor="edit-product-select">Choose a product to edit</label>
+          <label htmlFor="edit-product-select">Product to edit</label>
           <select
             id="edit-product-select"
             value={selectedEditProductId}
-            onChange={(event) => setEditProductId(event.target.value)}
+            onChange={(event) => navigate(`/products/${event.target.value}/edit`)}
+            disabled={productsLoading || products.length === 0}
           >
             {products.length === 0 && <option value="">No products available</option>}
             {products.map((product) => (
@@ -118,14 +118,6 @@ export default function ProductFormPage() {
               </option>
             ))}
           </select>
-          <button
-            type="button"
-            className="product-form-edit-picker__link"
-            onClick={handleEditMode}
-            disabled={!selectedEditProductId}
-          >
-            Open editor
-          </button>
         </div>
       )}
 
@@ -139,8 +131,8 @@ export default function ProductFormPage() {
                   sku: "PROD-NEW",
                   onHand: 0,
                   unitCost: 0,
-                  createdAt: "Today",
-                  createdBy: "Alex Lee",
+                  createdAt: "Not yet saved",
+                  createdBy: "",
                 }
               }
             />
@@ -151,6 +143,13 @@ export default function ProductFormPage() {
           </>
         }
       >
+        {isEdit && productsLoading ? (
+          <p role="status">Loading product…</p>
+        ) : isEdit && !currentProduct ? (
+          <p role="alert">Product not found.</p>
+        ) : categoriesLoading ? (
+          <p role="status">Loading categories…</p>
+        ) : (
         <ProductForm
           key={currentProduct?.id || "new"}
           product={currentProduct}
@@ -158,6 +157,7 @@ export default function ProductFormPage() {
           onSubmit={handleSubmit}
           onCancel={handleCancel}
         />
+        )}
       </SplitLayout>
 
       {deleting && (

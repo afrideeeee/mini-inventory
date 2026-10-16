@@ -9,7 +9,7 @@ export default function ProductDetailsFields({
   onNameChange,
   sku,
   onSkuChange,
-  category,
+  categoryId,
   onCategoryChange,
   categories = [],
   unitOfMeasure,
@@ -18,7 +18,7 @@ export default function ProductDetailsFields({
   onDescriptionChange,
   errors = {},
 }) {
-  const categoryOptions = categories.map((c) => ({ value: c.name, label: c.name }));
+  const categoryOptions = categories.map((c) => ({ value: c.id, label: c.name }));
 
   return (
     <div className="product-form-section">
@@ -54,10 +54,17 @@ export default function ProductDetailsFields({
           <FormField id="prod-cat" label="Category" required error={errors.category}>
             <SelectInput
               id="prod-cat"
-              value={category}
+              value={categoryId}
               onChange={(e) => onCategoryChange(e.target.value)}
               options={categoryOptions}
-            />
+              disabled={categories.length === 0}
+              aria-label="Select a category"
+            >
+              <option value="">Select a category</option>
+              {categoryOptions.map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </SelectInput>
           </FormField>
 
           <FormField id="prod-uom" label="Unit of measure" required>

@@ -3,6 +3,7 @@ import { Download, Info } from "lucide-react";
 import { useMovements } from "../hooks/useMovements";
 import { usePagination } from "../hooks/usePagination";
 import { exportCsv } from "../utils/csv";
+import { formatDateLong } from "../utils/format";
 
 import PageHeader from "../components/common/PageHeader";
 import Button from "../components/common/Button";
@@ -23,7 +24,6 @@ const CSV_COLUMNS = [
   { label: "Units", value: (m) => (m.type === "in" ? `+${m.quantity}` : `-${m.quantity}`) },
   { label: "Before", value: (m) => m.balanceBefore ?? 0 },
   { label: "After", value: (m) => m.balanceAfter ?? 0 },
-  { label: "Reference", value: (m) => m.reference || "—" },
   { label: "Reason", value: (m) => m.reason || "—" },
   { label: "Date", value: (m) => m.date },
   { label: "Time", value: (m) => m.time || "—" },
@@ -35,8 +35,11 @@ export default function MovementRecordsPage() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [dateRange, setDateRange] = useState("13 Oct - 13 Oct 2026");
+  const [dateFilter, setDateFilter] = useState("");
   const [selectedMovement, setSelectedMovement] = useState(null);
+  const selectedDateLabel = dateFilter
+    ? formatDateLong(new Date(`${dateFilter}T12:00:00`))
+    : "";
 
   const filtered = useMemo(() => {
     return movements.filter((m) => {
@@ -45,23 +48,23 @@ export default function MovementRecordsPage() {
         !q ||
         m.id.toLowerCase().includes(q) ||
         m.productName.toLowerCase().includes(q) ||
-        m.sku.toLowerCase().includes(q) ||
-        (m.reference && m.reference.toLowerCase().includes(q));
+        m.sku.toLowerCase().includes(q);
 
       if (!matchesSearch) return false;
 
       if (typeFilter !== "all" && m.type !== typeFilter) return false;
+      if (dateFilter && m.dateKey !== dateFilter && m.date !== selectedDateLabel) return false;
 
       return true;
     });
-  }, [movements, searchQuery, typeFilter]);
+  }, [movements, searchQuery, typeFilter, dateFilter, selectedDateLabel]);
 
   const pager = usePagination(filtered, PAGE_SIZE);
 
   const handleClearFilters = () => {
     setSearchQuery("");
     setTypeFilter("all");
-    setDateRange("13 Oct - 13 Oct 2026");
+    setDateFilter("");
     pager.setPage(1);
   };
 
@@ -72,6 +75,11 @@ export default function MovementRecordsPage() {
 
   const handleTypeChange = (val) => {
     setTypeFilter(val);
+    pager.setPage(1);
+  };
+
+  const handleDateChange = (val) => {
+    setDateFilter(val);
     pager.setPage(1);
   };
 
@@ -95,8 +103,8 @@ export default function MovementRecordsPage() {
         onSearchChange={handleSearchChange}
         typeFilter={typeFilter}
         onTypeChange={handleTypeChange}
-        dateRange={dateRange}
-        onDateChange={setDateRange}
+        dateValue={dateFilter}
+        onDateChange={handleDateChange}
         onClear={handleClearFilters}
       />
 
@@ -116,7 +124,7 @@ export default function MovementRecordsPage() {
 
           <div className="movement-records-notice">
             <Notice icon={Info}>
-              Balance shows stock before → after each entry. Open an entry for its reason and reference details.
+              Balance shows stock before → after each entry. Open an entry to view its reason and timestamp.
             </Notice>
           </div>
         </>

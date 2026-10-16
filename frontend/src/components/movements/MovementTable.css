@@ -23,7 +23,8 @@
 
 .movement-table__head {
   display: grid;
-  grid-template-columns: 110px minmax(180px, 1.4fr) 110px 80px 120px 100px 120px 110px;
+  grid-template-columns: 160px minmax(220px, 1.2fr) 130px 80px 130px 170px minmax(180px, 0.9fr);
+  min-width: 1080px;
   align-items: center;
   height: 44px;
   padding: 0 16px;

@@ -58,23 +58,23 @@ export default function DashboardPage() {
       <div className="dashboard-metrics-grid" role="region" aria-label="Key inventory metrics">
         <SummaryCard
           label="Products on the books"
-          value={padCount(products.length || 8)}
-          subtext={`Across ${categoryStats.categoryCount || categories.length || 4} categories`}
+          value={padCount(products.length)}
+          subtext={`Across ${categoryStats.categoryCount || categories.length} categories`}
         />
         <SummaryCard
           label="Units on hand"
-          value={String(productStats.totalUnits || 367)}
+          value={String(productStats.totalUnits)}
           subtext={`${netDisplay} net units today`}
         />
         <SummaryCard
           label="Inventory value"
-          value={formatCurrency(categoryStats.inventoryValue || 4152)}
-          subtext="At current unit cost / USD"
+          value={formatCurrency(productStats.totalValue)}
+          subtext="At current unit cost / PKR"
         />
         <SummaryCard
           label="Needs attention"
-          value={padCount(needsAttentionCount || 3)}
-          subtext={`${productStats.lowStockCount || 2} low stock · ${productStats.outOfStockCount || 1} out of stock`}
+          value={padCount(needsAttentionCount)}
+          subtext={`${productStats.lowStockCount} low stock · ${productStats.outOfStockCount} out of stock`}
         />
       </div>
 

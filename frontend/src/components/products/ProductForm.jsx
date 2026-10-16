@@ -15,20 +15,18 @@ export default function ProductForm({
 
   const [name, setName] = useState(product?.name || "");
   const [sku, setSku] = useState(product?.sku || "");
-  const [category, setCategory] = useState(
-    product?.category || categories[0]?.name || "Stationery"
-  );
+  const [categoryId, setCategoryId] = useState(product?.categoryId || "");
   const [unitOfMeasure, setUnitOfMeasure] = useState(
     product?.unitOfMeasure || "Piece (pc)"
   );
   const [description, setDescription] = useState(product?.description || "");
   const [unitCost, setUnitCost] = useState(
-    product?.unitCost !== undefined ? String(product.unitCost) : "12.00"
+    product?.unitCost !== undefined ? String(product.unitCost) : ""
   );
   const [minLevel, setMinLevel] = useState(
-    product?.minLevel !== undefined ? String(product.minLevel) : "30"
+    product?.minLevel !== undefined ? String(product.minLevel) : "0"
   );
-  const [bin, setBin] = useState(product?.bin || "A-01");
+  const [bin, setBin] = useState(product?.bin || "");
 
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
@@ -42,6 +40,7 @@ export default function ProductForm({
     const newErrors = {};
     if (!name.trim()) newErrors.name = "Product name is required.";
     if (!sku.trim()) newErrors.sku = "SKU is required.";
+    if (!categoryId) newErrors.category = "Please select a category.";
     if (unitCost === "" || isNaN(Number(unitCost)) || Number(unitCost) < 0) {
       newErrors.unitCost = "Please enter a valid unit cost.";
     }
@@ -60,12 +59,12 @@ export default function ProductForm({
       await onSubmit({
         name: name.trim(),
         sku: sku.trim().toUpperCase(),
-        category,
+        categoryId,
         unitOfMeasure,
         description: description.trim(),
         unitCost: Number(unitCost),
         minLevel: Number(minLevel),
-        bin: bin.trim() || "A-01",
+        bin: bin.trim(),
       });
     } catch (err) {
       setGeneralError(err.message || "Failed to save product.");
@@ -74,7 +73,7 @@ export default function ProductForm({
     }
   };
 
-  const isComplete = name.trim() && sku.trim() && unitCost !== "" && minLevel !== "";
+  const isComplete = name.trim() && sku.trim() && categoryId && unitCost !== "" && minLevel !== "";
 
   return (
     <form className="product-form" onSubmit={handleSubmit} noValidate>
@@ -83,8 +82,8 @@ export default function ProductForm({
         onNameChange={setName}
         sku={sku}
         onSkuChange={setSku}
-        category={category}
-        onCategoryChange={setCategory}
+        categoryId={categoryId}
+        onCategoryChange={setCategoryId}
         categories={categories}
         unitOfMeasure={unitOfMeasure}
         onUnitOfMeasureChange={setUnitOfMeasure}

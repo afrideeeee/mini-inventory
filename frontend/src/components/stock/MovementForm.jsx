@@ -10,6 +10,12 @@ import BalancePreview from "./BalancePreview";
 import { STOCK_IN_REASONS, STOCK_OUT_REASONS } from "../../constants/stockReasons";
 import "./MovementForm.css";
 
+function todayInputValue() {
+  const today = new Date();
+  const localOffset = today.getTimezoneOffset() * 60_000;
+  return new Date(today.getTime() - localOffset).toISOString().slice(0, 10);
+}
+
 const TABS = [
   { id: "in", label: "Stock-in", icon: ArrowDownLeft },
   { id: "out", label: "Stock-out", icon: ArrowUpRight },
@@ -24,10 +30,9 @@ export default function MovementForm({
   const formBaseId = useId();
   const [type, setType] = useState("in");
   const [localProductId, setLocalProductId] = useState("");
-  const [quantity, setQuantity] = useState("24");
-  const [date, setDate] = useState("13 Oct 2026");
+  const [quantity, setQuantity] = useState("");
+  const [date, setDate] = useState(todayInputValue);
   const [reason, setReason] = useState(STOCK_IN_REASONS[0].value);
-  const [reference, setReference] = useState("PO-2049");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -40,13 +45,7 @@ export default function MovementForm({
     setType(newType);
     setError("");
     setSuccess("");
-    if (newType === "in") {
-      setReason(STOCK_IN_REASONS[0].value);
-      if (!reference || reference.startsWith("SO-")) setReference("PO-2049");
-    } else {
-      setReason(STOCK_OUT_REASONS[0].value);
-      if (!reference || reference.startsWith("PO-")) setReference("SO-1095");
-    }
+    setReason(newType === "in" ? STOCK_IN_REASONS[0].value : STOCK_OUT_REASONS[0].value);
   };
 
   const handleProductSelect = (e) => {
@@ -78,8 +77,8 @@ export default function MovementForm({
       setError("Please select a product.");
       return;
     }
-    if (!numQty || numQty <= 0) {
-      setError("Quantity must be greater than zero.");
+    if (!Number.isSafeInteger(numQty) || numQty <= 0) {
+      setError("Quantity must be a positive whole number.");
       return;
     }
     if (type === "out" && numQty > currentStock) {
@@ -99,9 +98,8 @@ export default function MovementForm({
         productId: activeProductId,
         type,
         quantity: numQty,
-        date: date.trim() || "13 Oct 2026",
+        date,
         reason: reason.trim(),
-        reference: reference.trim(),
       });
       setSuccess(`Movement recorded successfully for ${currentProduct.name}.`);
       setQuantity("");
@@ -129,7 +127,13 @@ export default function MovementForm({
             value={activeProductId}
             onChange={handleProductSelect}
             options={productOptions}
-          />
+            disabled={products.length === 0}
+          >
+            <option value="">{products.length ? "Select a product" : "No products available"}</option>
+            {productOptions.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </SelectInput>
         </FormField>
 
         <div className="movement-form__row">
@@ -143,6 +147,7 @@ export default function MovementForm({
               id={`${formBaseId}-qty`}
               type="number"
               min="1"
+              step="1"
               value={quantity}
               onChange={(e) => {
                 setQuantity(e.target.value);
@@ -154,16 +159,12 @@ export default function MovementForm({
             />
           </FormField>
 
-          <FormField
-            id={`${formBaseId}-date`}
-            label="Date"
-            required
-          >
+          <FormField id={`${formBaseId}-date`} label="Date" required>
             <TextInput
               id={`${formBaseId}-date`}
+              type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              placeholder="13 Oct 2026"
             />
           </FormField>
         </div>
@@ -178,18 +179,6 @@ export default function MovementForm({
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             options={reasonOptions}
-          />
-        </FormField>
-
-        <FormField
-          id={`${formBaseId}-ref`}
-          label="Reference"
-        >
-          <TextInput
-            id={`${formBaseId}-ref`}
-            value={reference}
-            onChange={(e) => setReference(e.target.value)}
-            placeholder="PO-2049"
           />
         </FormField>
 
@@ -211,7 +200,7 @@ export default function MovementForm({
           variant="strong"
           block
           icon={type === "in" ? Check : ArrowUpRight}
-          disabled={submitting || isBlocked || !numQty}
+          disabled={submitting || isBlocked || !activeProductId || !Number.isSafeInteger(numQty) || numQty <= 0}
         >
           {type === "in" ? "Record stock-in" : "Record stock-out"}
         </Button>

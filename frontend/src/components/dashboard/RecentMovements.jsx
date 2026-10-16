@@ -23,14 +23,13 @@ export default function RecentMovements({ movements = [] }) {
           <span role="columnheader">Product</span>
           <span role="columnheader">Movement</span>
           <span className="fresh-entries__num" role="columnheader">Units</span>
-          <span role="columnheader">Reference</span>
           <span role="columnheader">Recorded</span>
         </div>
 
         {topMovements.map((m) => {
           const movementLabel = m.type === "in" ? "Stock-in" : "Stock-out";
           const unitsLabel = m.type === "in" ? `+${m.quantity}` : `-${m.quantity}`;
-          const recordedLabel = m.time ? `Today, ${m.time}` : m.date;
+          const recordedLabel = m.time ? `${m.date}, ${m.time}` : m.date;
 
           return (
             <div className="fresh-entries__tr" role="row" key={m.id}>
@@ -40,7 +39,6 @@ export default function RecentMovements({ movements = [] }) {
               </div>
               <div role="cell">{movementLabel}</div>
               <div className="fresh-entries__num" role="cell">{unitsLabel}</div>
-              <div role="cell">{m.reference || "—"}</div>
               <div role="cell">{recordedLabel}</div>
             </div>
           );

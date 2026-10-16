@@ -6,7 +6,7 @@ export const appConfig = {
   companyName: "Form & Field Supply",
   footerName: "Form & Field / Inventory Register",
   warehouse: "Main warehouse",
-  currency: "USD",
-  locale: "en-US",
+  currency: "PKR",
+  locale: "en-PK",
   user: { name: "Alex Lee", initials: "AL" },
 };

@@ -10,10 +10,20 @@ export function CategoriesProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const refreshCategories = useCallback(async () => {
+    try {
+      const data = await categoryService.getAll();
+      setCategories(data.categories);
+      setUnassignedProducts(data.unassignedProducts);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    }
+  }, []);
+
   useEffect(() => {
     let active = true;
-    categoryService
-      .getAll()
+    categoryService.getAll()
       .then((data) => {
         if (!active) return;
         setCategories(data.categories);
@@ -22,9 +32,7 @@ export function CategoriesProvider({ children }) {
       })
       .catch((err) => active && setError(err.message))
       .finally(() => active && setLoading(false));
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, [markUpdated]);
 
   // Actions throw on validation errors so the calling form can show them.
@@ -65,11 +73,12 @@ export function CategoriesProvider({ children }) {
       stats,
       loading,
       error,
+      refreshCategories,
       addCategory,
       updateCategory,
       deleteCategory,
     }),
-    [categories, stats, loading, error, addCategory, updateCategory, deleteCategory]
+    [categories, stats, loading, error, refreshCategories, addCategory, updateCategory, deleteCategory]
   );
 
   return (

@@ -13,11 +13,10 @@ export default function MovementDetails({ movement, onClose }) {
     quantity,
     balanceBefore = 0,
     balanceAfter = 0,
-    reference,
     reason,
     date,
     time = "—",
-    by = "Alex Lee",
+    by = "",
   } = movement;
 
   const typeLabel = type === "in" ? "Stock-in (+)" : "Stock-out (-)";
@@ -57,11 +56,6 @@ export default function MovementDetails({ movement, onClose }) {
         <div className="movement-details-item">
           <span className="movement-details-label">Reason</span>
           <span className="movement-details-value">{reason || "Standard adjustment"}</span>
-        </div>
-
-        <div className="movement-details-item">
-          <span className="movement-details-label">Reference</span>
-          <span className="movement-details-value">{reference || "—"}</span>
         </div>
 
         <div className="movement-details-item">

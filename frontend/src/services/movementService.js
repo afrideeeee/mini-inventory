@@ -1,57 +1,44 @@
-import { mockMovements } from "../data/mockMovements";
-import { appConfig } from "../config/appConfig";
-import { formatTime } from "../utils/format";
+import { getToken } from "./authService";
+import { formatDateLong, formatTime } from "../utils/format";
 
-let store = mockMovements.map((m) => ({ ...m }));
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-const delay = (ms = 100) => new Promise((resolve) => setTimeout(resolve, ms));
+async function request(path = "", options = {}) {
+  const token = getToken();
+  const response = await fetch(`${API_BASE}/movements${path}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers,
+    },
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.message || "The movement request failed.");
+  return data;
+}
+
+function toMovement(entry) {
+  const createdAt = new Date(entry.createdAt);
+  const movementDate = new Date(`${entry.date}T12:00:00`);
+  return {
+    ...entry,
+    dateKey: entry.date,
+    date: formatDateLong(movementDate),
+    time: formatTime(createdAt),
+  };
+}
 
 export const movementService = {
   async getAll() {
-    await delay();
-    return store.map((m) => ({ ...m }));
+    const data = await request();
+    return (data.movements || []).map(toMovement);
   },
-
-  async create({
-    productId,
-    productName,
-    sku,
-    type,
-    quantity,
-    reason,
-    date,
-    reference = "",
-    balanceBefore = 0,
-    balanceAfter,
-    by = appConfig.user.name,
-  }) {
-    await delay();
-    const highestNum = store.reduce((max, item) => {
-      const match = item.id.match(/MOV-(\d+)/);
-      return match ? Math.max(max, parseInt(match[1], 10)) : max;
-    }, 108);
-
-    const nextId = `MOV-${String(highestNum + 1).padStart(4, "0")}`;
-    const now = new Date();
-
-    const newMovement = {
-      id: nextId,
-      productId,
-      productName,
-      sku,
-      type,
-      quantity: Number(quantity),
-      balanceBefore,
-      balanceAfter,
-      reason,
-      date: date || "13 Oct 2026",
-      time: formatTime(now),
-      reference: reference.trim() || "—",
-      by,
-      createdAt: now.toISOString(),
+  async create(input) {
+    const data = await request("", { method: "POST", body: JSON.stringify(input) });
+    return {
+      product: data.product,
+      movement: toMovement(data.movement),
     };
-
-    store = [newMovement, ...store];
-    return { ...newMovement };
   },
 };

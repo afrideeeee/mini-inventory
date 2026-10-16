@@ -10,16 +10,16 @@ export default function MovementRow({ movement, onClick }) {
     quantity,
     balanceBefore = 0,
     balanceAfter = 0,
-    reference,
     date,
     time = "12:00",
-    by = "Alex Lee",
+    by = "",
   } = movement;
 
   const isIn = type === "in";
   const unitsFormatted = isIn ? `+${quantity}` : `-${quantity}`;
   const MovementIcon = isIn ? ArrowDownLeft : ArrowUpRight;
   const movementLabel = isIn ? "Stock-in" : "Stock-out";
+  const shortId = id?.length > 18 ? `${id.slice(0, 11)}…${id.slice(-4)}` : id;
 
   return (
     <div
@@ -35,7 +35,7 @@ export default function MovementRow({ movement, onClick }) {
       }}
     >
       <div className="movement-row__entry" role="cell">
-        {id}
+        <span title={id}>{shortId}</span>
       </div>
 
       <div className="movement-row__product" role="cell">
@@ -56,10 +56,6 @@ export default function MovementRow({ movement, onClick }) {
 
       <div className="movement-row__balance" role="cell">
         {balanceBefore} → {balanceAfter}
-      </div>
-
-      <div className="movement-row__ref" role="cell">
-        {reference || "—"}
       </div>
 
       <div className="movement-row__datetime" role="cell">

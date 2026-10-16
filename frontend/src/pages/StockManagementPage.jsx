@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { TriangleAlert } from "lucide-react";
 import { ROUTES } from "../config/routes";
 import { useProducts } from "../hooks/useProducts";
+import { useMovements } from "../hooks/useMovements";
 import { usePagination } from "../hooks/usePagination";
 import { getStockStatus } from "../utils/stockStatus";
 import { STOCK_STATES, STOCK_STATE_OPTIONS } from "../constants/stockStates";
@@ -20,10 +21,11 @@ const PAGE_SIZE = 8;
 
 export default function StockManagementPage() {
   const { products, stats, loading, error, recordMovement } = useProducts();
+  const { addMovement } = useMovements();
 
   const [query, setQuery] = useState("");
   const [stockStateFilter, setStockStateFilter] = useState(STOCK_STATES.ALL);
-  const [selectedProductId, setSelectedProductId] = useState("prod-03"); // defaults to Ceramic mug like in reference
+  const [selectedProductId, setSelectedProductId] = useState("");
 
   // Filter products by search text and status
   const filteredProducts = useMemo(() => {
@@ -65,7 +67,8 @@ export default function StockManagementPage() {
   };
 
   const handleRecordMovement = async (movementData) => {
-    await recordMovement(movementData);
+    const result = await recordMovement(movementData);
+    addMovement(result.movement);
   };
 
   return (

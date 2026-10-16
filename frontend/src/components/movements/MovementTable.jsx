@@ -24,7 +24,6 @@ export default function MovementTable({
           <span role="columnheader">Movement</span>
           <span className="movement-table__th--units" role="columnheader">Units</span>
           <span role="columnheader">Balance</span>
-          <span role="columnheader">Reference</span>
           <span role="columnheader">Date / Time</span>
           <span className="movement-table__th--by" role="columnheader">By</span>
         </div>
